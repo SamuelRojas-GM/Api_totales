@@ -1,11 +1,4 @@
-substitutions:
-  _REGION: "us-central1"
-  _REPO: "api-totales"
-  _SERVICE: "ms-mv-consulta-vehiculo-pt"
-  _APP_ENV: "prod"
-
 steps:
-
   # 1. Build container image con build-arg APP_ENV
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -25,7 +18,7 @@ steps:
         "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
       ]
 
-  # 3. Deploy to Cloud Run
+  # 3. Deploy to Cloud Run (AQUÍ ESTÁ LA SOLUCIÓN)
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -36,6 +29,12 @@ steps:
         "--platform", "managed",
         "--allow-unauthenticated",
 
+        # --- CONFIGURACIÓN CRÍTICA PARA PLAYWRIGHT ---
+        "--memory", "2Gi",      # Aumentado de 512MB a 2GB (necesario para Chrome)
+        "--cpu", "1",           # Asegura 1 CPU completo
+        "--timeout", "5m",      # Tiempo extra para arranque
+        # ---------------------------------------------
+
         # ENV VARS
         "--set-env-vars", "IMAGES_MODE=gs",
         "--set-env-vars", "PROJECT_ID=$PROJECT_ID",
@@ -43,6 +42,12 @@ steps:
         "--set-env-vars", "PROMPTS_FILE=prompts.yaml",
         "--set-env-vars", "APP_ENV=${_APP_ENV}"
       ]
+
+substitutions:
+  _REGION: "us-central1"
+  _REPO: "api-totales"
+  _SERVICE: "ms-mv-consulta-vehiculo-pt"
+  _APP_ENV: "prod"
 
 images:
   - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
