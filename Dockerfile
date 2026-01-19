@@ -12,12 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # Expose the app port (project uses 4000 in run.py)
-EXPOSE 4000
+EXPOSE 8080
 
-# (Optional) Ensure browsers are installed/up-to-date (usually preinstalled in this base image)
-RUN playwright install --with-deps
-
-# Start the API
-# If you prefer Gunicorn with multiple workers:
-# CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "app:app", "-b", "0.0.0.0:4000", "--workers", "2"]
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "4000", "--proxy-headers", "--forwarded-allow-ips", "*"]
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-8080} --proxy-headers --forwarded-allow-ips *"]
