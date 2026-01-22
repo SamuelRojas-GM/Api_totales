@@ -3,6 +3,9 @@ FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy
 
 WORKDIR /app
 
+
+ENV PYTHONUNBUFFERED=1
+
 # 1. Instalar dependencias
 # Se hace antes de copiar el código para aprovechar la caché de Docker
 COPY requirements.txt /app/requirements.txt
