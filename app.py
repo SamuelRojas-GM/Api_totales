@@ -90,6 +90,7 @@ class ConsultaResponse(BaseModel):
     prenda: bool
     total_propietarios: int
     propietario_valido: Optional[bool] = None
+    organismoTransito: str
 
 
 # ==========================================
@@ -163,6 +164,7 @@ async def consultar_vehiculo(payload: ConsultaInput):
         n_prop = int(Consulta_propietarios(runt_json))
 
         propietario_valido = None
+        organismo_Transito = runt_json.get("organismoTransito")
         if payload.numero_documento and payload.nombre_propietario:
             propietario_valido = bool(
                 validar_propietario(
@@ -179,6 +181,7 @@ async def consultar_vehiculo(payload: ConsultaInput):
             prenda=prenda,
             total_propietarios=n_prop,
             propietario_valido=propietario_valido,
+            organismoTransito=organismo_Transito
         )
 
     except Exception as e:
