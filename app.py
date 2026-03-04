@@ -164,7 +164,7 @@ async def consultar_vehiculo(payload: ConsultaInput):
         n_prop = int(Consulta_propietarios(runt_json))
 
         propietario_valido = None
-        organismo_Transito = runt_json.get("organismoTransito")
+        organismo_Transito = runt_json.get("organismoTransito") or "DESCONOCIDO"
         if payload.numero_documento and payload.nombre_propietario:
             propietario_valido = bool(
                 validar_propietario(
