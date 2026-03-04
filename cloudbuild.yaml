@@ -35,12 +35,8 @@ steps:
         "--timeout", "5m",      # Tiempo extra para arranque
         # ---------------------------------------------
 
-        # ENV VARS
-        "--set-env-vars", "IMAGES_MODE=gs",
-        "--set-env-vars", "PROJECT_ID=$PROJECT_ID",
-        "--set-env-vars", "LOCATION=${_REGION}",
-        "--set-env-vars", "PROMPTS_FILE=prompts.yaml",
-        "--set-env-vars", "APP_ENV=${_APP_ENV}"
+        # Secret Manager: MS_MOV_PT_SECS_JSON
+        "--set-secrets", "MS_MOV_PT_SECS_JSON=ms-mov-pt-secs:latest"
       ]
 
 substitutions:
