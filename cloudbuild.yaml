@@ -1,4 +1,12 @@
 # Stage y main: usan Secret Manager (ms-mov-pt-secs). Igual que workflow-pt.
+substitutions:
+  _REGION: "us-central1"
+  _REPO: "api-totales"
+  _SERVICE: "ms-mv-consulta-vehiculo-pt"
+  _SHARED_VPC_HOST_PROJECT: "sb-ecosistemaanalitico-redes"
+  _SHARED_VPC_NETWORK_NAME: "sb-ea-net-prd"
+  _SHARED_VPC_SUBNET_NAME: "sb-ea-subnet-prd"
+
 steps:
   # 1. Build container image
   - name: "gcr.io/cloud-builders/docker"
@@ -31,13 +39,12 @@ steps:
         "--memory", "2Gi",
         "--cpu", "1",
         "--timeout", "5m",
+        "--network=projects/${_SHARED_VPC_HOST_PROJECT}/global/networks/${_SHARED_VPC_NETWORK_NAME}",
+        "--subnet=projects/${_SHARED_VPC_HOST_PROJECT}/regions/${_REGION}/subnetworks/${_SHARED_VPC_SUBNET_NAME}",
+        "--vpc-egress=private-ranges-only",
+        "--service-account=sa-pt-indemnizaciones@$PROJECT_ID.iam.gserviceaccount.com",
         "--set-secrets=MS_MOV_PT_SECS_JSON=ms-mov-pt-secs:latest"
       ]
-
-substitutions:
-  _REGION: "us-central1"
-  _REPO: "api-totales"
-  _SERVICE: "ms-mv-consulta-vehiculo-pt"
 
 images:
   - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
