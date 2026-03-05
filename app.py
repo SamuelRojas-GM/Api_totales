@@ -1,9 +1,21 @@
 import asyncio
+import json
 import logging
+import os
 import sys
 import traceback
 import time  # Para medir latencia
 from typing import Optional, Any, Dict
+
+# Bootstrap: cargar Secret Manager (MS_MOV_PT_SECS_JSON) en os.environ
+_raw = os.getenv("MS_MOV_PT_SECS_JSON")
+if _raw:
+    try:
+        for k, v in json.loads(_raw).items():
+            if v is not None:
+                os.environ[k] = str(v)
+    except Exception:
+        pass
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
