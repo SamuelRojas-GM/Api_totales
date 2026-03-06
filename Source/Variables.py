@@ -159,6 +159,6 @@ jsonD = '''{
  '''
 data = json.loads(jsonD)
 
-primetarios = validar_propietario(data,"9861475","ADOLFO ENRIQUE OSPINO TREJOS")
+primetarios = validar_propietario(data,"860001965","TEXTILES LAFAYETTE SAS")
 
 print(primetarios)
