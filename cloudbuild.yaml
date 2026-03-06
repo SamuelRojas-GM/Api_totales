@@ -36,15 +36,24 @@ steps:
         "--region", "${_REGION}",
         "--platform", "managed",
         "--allow-unauthenticated",
-        "--memory", "2Gi",
-        "--cpu", "1",
-        "--timeout", "5m",
+        "--memory=2Gi",
+        "--cpu=2",
+        "--min-instances=1",
+        "--max-instances=10",
+        "--concurrency=20",
+        "--timeout=300",
         "--network=projects/${_SHARED_VPC_HOST_PROJECT}/global/networks/${_SHARED_VPC_NETWORK_NAME}",
         "--subnet=projects/${_SHARED_VPC_HOST_PROJECT}/regions/${_REGION}/subnetworks/${_SHARED_VPC_SUBNET_NAME}",
         "--vpc-egress=private-ranges-only",
+        "--execution-environment=gen2",
+        "--cpu-boost",
         "--service-account=sa-pt-indemnizaciones@$PROJECT_ID.iam.gserviceaccount.com",
         "--set-secrets=MS_MOV_PT_SECS_JSON=ms-mov-pt-secs:latest"
       ]
 
 images:
   - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
