@@ -1,6 +1,6 @@
 # Stage y main: usan Secret Manager (ms-mov-pt-secs). Igual que workflow-pt.
 substitutions:
-  _REGION: "us-central1"
+  _REGION: "us-east1"
   _REPO: "api-totales"
   _SERVICE: "ms-mv-consulta-vehiculo-pt"
   _SHARED_VPC_HOST_PROJECT: "sb-ecosistemaanalitico-redes"
