@@ -47,7 +47,7 @@ steps:
         "--vpc-egress=private-ranges-only",
         "--execution-environment=gen2",
         "--cpu-boost",
-        "--service-account=sa-pt-indemnizaciones@$PROJECT_ID.iam.gserviceaccount.com",
+        "--service-account=sa-pt-indemnizaciones@${PROJECT_ID}.iam.gserviceaccount.com",
         "--set-secrets=MS_MOV_PT_SECS_JSON=ms-mov-pt-secs:latest"
       ]
 
